@@ -1,7 +1,7 @@
 import { sessionStartTimes } from "../../stateManager";
 
 export async function POST(req) {
-  const { timestamp, token } = await req.json();
+  const { timestamp, token, subject } = await req.json();
   if (!token) {
     return Response.json({ error: "No token provided" }, { status: 400 });
   }
@@ -10,7 +10,10 @@ export async function POST(req) {
   }
 
   console.log(timestamp, token);
-  sessionStartTimes[token] = timestamp;
+  sessionStartTimes[token] = { 
+    timestamp: timestamp,
+    subject: subject
+  };
 
   return Response.json({ message: "OK" }, { status: 200 });
 }

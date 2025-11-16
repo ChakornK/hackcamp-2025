@@ -23,22 +23,27 @@
 
       main {
         width: 350px;
-        height: 450px;
+        height: 550px;
         position: relative;
         overflow: hidden;
+        background: #f5f5f5;
       }
       #main-container {
         display: flex;
         flex-direction: column;
         gap: 1rem;
         padding: 2rem;
-        background: #f5f5f5;
         color: #333;
         font-family: sans-serif;
       }
       h1 {
         font-weight: 500;
         margin: 0;
+        cursor: pointer;
+        transition: color 0.2s ease;
+      }
+      h1:hover {
+        color: #8ec5ff; /* ADDED: Change color on hover */
       }
       p {
         margin: 0;
@@ -123,6 +128,23 @@
         border: 1px solid #ccc;
         font-size: 1rem;
       }
+      select {
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        border: 1px solid #f5f5f5;
+        font-size: 1rem;
+        background: #e0e0e0;
+        color: #333;
+        cursor: pointer;
+        width: 50%;
+      }
+      
+      #subject-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: center;
+      }
       a {
         color: #4989ea;
         text-decoration: none;
@@ -140,7 +162,7 @@
       <div id="main-container">
         <div class="row">
           <img src="./icon.png" alt="" width="40px" />
-          <h1>Reel Rewards</h1>
+          <h1 id="header-title">Reel Rewards</h1>
         </div>
         <p>Reel status:</p>
 
@@ -169,6 +191,20 @@
         <div class="hidden action-button-row" id="running-buttons">
           <button class="blue" id="pause-button">Pause</button>
           <button class="gray" id="stop-button">Stop</button>
+        </div>
+      </div>
+
+      <div id="subject-container">
+          <select id="subject-select" style="text-align:center;">
+            <option value="Math">Math</option>
+            <option value="Science">Science</option>
+            <option value="English">English</option>
+            <option value="Foreign Language">Foreign Language</option>
+            <option value="Computer Science">Computer Science</option>
+            <option value="Art">Art</option>
+            <option value="Music">Music</option>
+            <option value="Other">Other</option>
+          </select>
         </div>
       </div>
 
