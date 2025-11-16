@@ -297,3 +297,10 @@ const headerTitle = document.getElementById("header-title");
 headerTitle.addEventListener("click", () => {
   chrome.tabs.create({ url: "http://localhost:3000/" });
 });
+
+const logoutButton = document.getElementById("logout-button");
+logoutButton.addEventListener("click", () => {
+  chrome.storage.local.remove("token", () => {
+    window.location.reload();
+  });
+});
