@@ -17,7 +17,8 @@ export default function Timer() {
   const updateInterval = 1000; // Update every 1s
 
   const updateTimer = () => {
-    const elapsed = Date.now() - startTimestampRef.current + timeOffsetRef.current;
+    const elapsed =
+      Date.now() - startTimestampRef.current + timeOffsetRef.current;
     const newProgressSeconds = Math.floor(elapsed / 1000);
     const newProgress = (elapsed / totalDuration) * 100;
 
@@ -97,7 +98,14 @@ export default function Timer() {
       <div className="bg-blue-50 shadow-md hover:shadow-xl p-8 border-2 border-blue-400 rounded-3xl transition-shadow">
         <div className="timer-circle-container">
           <svg viewBox="15 15 70 70" width="250">
-            <circle stroke="#dbeafe" strokeWidth="5.5" cx="50" cy="50" r="25" fill="none" />
+            <circle
+              stroke="#dbeafe"
+              strokeWidth="5.5"
+              cx="50"
+              cy="50"
+              r="25"
+              fill="none"
+            />
             <circle
               transform="rotate(-90 50 50)"
               strokeLinecap="round"
@@ -113,7 +121,14 @@ export default function Timer() {
                 transition: "stroke-dasharray 1s linear",
               }}
             />
-            <text fontSize="9" x="50" y="50" textAnchor="middle" dominantBaseline="middle" fill="#333">
+            <text
+              fontSize="9"
+              x="50"
+              y="50"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fill="#333"
+            >
               {formatTime(progressSeconds)}
             </text>
           </svg>
@@ -139,8 +154,14 @@ export default function Timer() {
 
       {showModal && (
         <div className="timer-modal-bg show" onClick={handleCancelStop}>
-          <div className="timer-modal-box show" onClick={(e) => e.stopPropagation()}>
-            <p>Stopping the timer will record your current progress.</p>
+          <div
+            className="timer-modal-box show"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p>
+              Stopping the timer will mark this session as incomplete. Are you
+              sure you need reels NOW?
+            </p>
             <div className="timer-action-buttons">
               <button className="timer-button gray" onClick={handleCancelStop}>
                 Cancel
