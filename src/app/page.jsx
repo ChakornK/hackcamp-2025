@@ -1,10 +1,41 @@
-import BarChartComponent from "./components/chart";
+import Streaks from './components/streaks';
+import StudyStats from './components/studystats';
+import Leaderboard from './components/leaderboard';
+
+const entries = [
+  { date: '2025-11-09' },
+  { date: '2025-11-10' },
+  { date: '2025-11-11' },
+  { date: '2025-11-13' },
+  { date: '2025-11-14' },
+  { date: '2025-11-15' }, // Today
+];
 
 export default function Home() {
-  return (
-    <main>
-      <p>Hello skibidi sigmas!!</p>
-      <BarChartComponent />
+  const leaderboardData = [
+    {
+      title: "Leaderboard",
+      data: [
+        { rank: 1, name: "Donald Trump", value: "3hr 5min" },
+        { rank: 2, name: "Agartha", value: "2hr 59min" },
+        { rank: 3, name: "Yo mama", value: "1hr 9min" },
+      ],
+    },
+    {
+      title: "Hall of shame :(",
+      data: [
+        { rank: 1, name: "Donald Trump", value: "35%" },
+        { rank: 2, name: "Big Beautiful Bill", value: "42%" },
+        { rank: 3, name: "Diddy Blud", value: "67%" },
+      ],
+    },
+  ];
+
+  return ( 
+    <main className="bg-[#E5E7EB] p-8 min-h-screen">
+      <Streaks entries={entries}/>
+      <StudyStats studyMinutes={120} averageStudyLength={30} />
+      <Leaderboard leaderboards={leaderboardData} />
     </main>
   );
 }
