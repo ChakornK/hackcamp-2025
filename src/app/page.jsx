@@ -5,6 +5,7 @@ import StudyStats from "./components/studystats";
 import Leaderboard from "./components/leaderboard";
 import BarChartComponent from "./components/chart";
 import { useRouter } from "next/navigation";
+import Timer from "./components/timer";
 
 const entries = [
   { date: "2025-11-10" },
@@ -40,11 +41,6 @@ export default function Home() {
   ];
   const router = useRouter();
 
-  const Timer = () => (
-    <div className="flex justify-center items-center bg-orange-50 shadow-md hover:shadow-xl p-8 border-2 border-orange-400 rounded-3xl min-h-[200px] transition-shadow">
-      Timer Component
-    </div>
-  );
 
   const Graph = () => (
     <div className="flex justify-center items-center bg-white shadow-md hover:shadow-xl p-8 rounded-3xl h-full transition-shadow">Graph Component</div>

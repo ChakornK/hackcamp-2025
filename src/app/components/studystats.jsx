@@ -1,6 +1,6 @@
 export default function StudyStats({ studyMinutes, averageStudyLength }) {
   return (
-    <div className="bg-green-50 shadow-md hover:shadow-xl p-8 border-2 border-green-400 rounded-3xl transition-shadow">
+    <div className="bg-green-50 shadow-md hover:shadow-xl p-17 border-2 border-green-400 rounded-3xl transition-shadow">
       <h1 className="mb-6 font-bold text-2xl text-center">Study Stats</h1>
       <div className="flex justify-around items-center gap-5">
         <div className="flex-1 text-center">

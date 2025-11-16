@@ -62,13 +62,13 @@ export default function Streaks({ entries = [] }) {
   const last7Days = getLast7Days();
 
   return (
-    <div className="bg-blue-50 shadow-md hover:shadow-xl p-8 border-2 border-blue-400 rounded-3xl text-center transition-shadow">
-      <h2 className="mb-4 font-bold text-2xl">Current Streak 🔥</h2>
-      <div className="flex justify-center gap-2 my-4">
+    <div className="bg-blue-50 shadow-md hover:shadow-xl p-20 border-2 border-blue-400 rounded-3xl text-center transition-shadow">
+      <h2 className="mb-6 font-bold text-2xl">Current Streak 🔥</h2>
+      <div className="flex justify-center gap-2 my-6">
         {last7Days.map((day, index) => (
           <div
             key={index}
-            className={`rounded-full w-12 h-12 flex items-center justify-center transition-all duration-300 ${
+            className={`rounded-full w-10 h-10 flex items-center justify-center transition-all duration-300 ${
               day.hasEntry ? "bg-blue-100" : "bg-gray-200"
             }`}
             style={{ opacity: day.hasEntry ? 1 : 0.5 }}
