@@ -3,17 +3,33 @@ const timerText = document.getElementById("timer-text");
 
 let progress = 0;
 let progressSeconds = 0;
-const totalDuration = 25 * 60 * 1000; // 25 minutes
+const totalDuration = 0.25 * 60 * 1000; // 25 minutes
 const updateInterval = 1000; // Update every 1s
 
 let startTimestamp = 0;
 let timeOffset = 0;
 
 let timerInterval;
+
+function resetTimer(timerInterval) {
+  clearTimeout(timerInterval);
+  progress = 0;
+  progressSeconds = 0;
+  startTimestamp = 0;
+  timeOffset = 0;
+  running = false;
+  startButton.innerText = "Start";
+  timerCircle.style.strokeDasharray = `0 100`;
+  timerText.textContent = "00:00:00";
+}
+
+function startPomodoro() {
+ //!!!
+}
+
 function updateTimer() {
   progressSeconds = Math.floor((Date.now() - startTimestamp + timeOffset) / 1000);
   progress = ((Date.now() - startTimestamp + timeOffset) / totalDuration) * 100;
-  if (progress > 100) progress = 100;
 
   timerCircle.style.strokeDasharray = `${progress} ${100 - progress}`;
   timerText.textContent = `${Math.floor(progressSeconds / 3600)
@@ -25,6 +41,10 @@ function updateTimer() {
   if (progress < 100) {
     timerInterval = setTimeout(updateTimer, updateInterval);
   }
+
+  if (progress >= 100) {
+    resetTimer(timerInterval)
+  };
 }
 
 // Initialize strokeDasharray
