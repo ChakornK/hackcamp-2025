@@ -31,7 +31,7 @@ export default function Leaderboard({ leaderboards }) {
       </button>
 
       {/* Leaderboard Card */}
-      <div className="bg-[#D1D5DB] p-8 rounded-3xl w-full max-w-md">
+      <div className="bg-purple-50 shadow-md hover:shadow-xl p-8 border-2 border-purple-400 rounded-3xl w-full max-w-md transition-shadow">
         <h2 className="mb-6 font-bold text-2xl text-center">
           {currentLeaderboard.title}
         </h2>
