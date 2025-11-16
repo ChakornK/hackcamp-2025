@@ -39,6 +39,11 @@
       h1 {
         font-weight: 500;
         margin: 0;
+        cursor: pointer;
+        transition: color 0.2s ease;
+      }
+      h1:hover {
+        color: #8ec5ff; /* ADDED: Change color on hover */
       }
       p {
         margin: 0;
@@ -157,7 +162,7 @@
       <div id="main-container">
         <div class="row">
           <img src="./icon.png" alt="" width="40px" />
-          <h1>Reel Rewards</h1>
+          <h1 id="header-title">Reel Rewards</h1>
         </div>
         <p>Reel status:</p>
 
