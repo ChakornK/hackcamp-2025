@@ -54,6 +54,7 @@ stopButton.addEventListener("click", () => {
   progressSeconds = 0;
   startTimestamp = 0;
   timeOffset = 0;
+  running = false;
   startButton.innerText = "Start";
   timerCircle.style.strokeDasharray = `0 100`;
   timerText.textContent = "00:00:00";
