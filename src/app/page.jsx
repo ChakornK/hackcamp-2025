@@ -18,7 +18,7 @@ const entries = [
 ];
 
 export default function Home() {
-  const {token} = useContext(GlobalContext)
+  const { token } = useContext(GlobalContext);
 
   if (!token) {
     return <p>Please log in to view your stats</p>;
@@ -43,7 +43,7 @@ export default function Home() {
           value: "42%",
         },
         { rank: 3, name: "Diddy Blud", value: "67%" },
-        { rank: 4, name: "Lebron James", value: "69%" }
+        { rank: 4, name: "Lebron James", value: "69%" },
       ],
     },
   ];
@@ -69,7 +69,7 @@ export default function Home() {
 
         <div className="flex md:flex-row flex-col gap-6">
           <div className="bg-amber-50 shadow-md hover:shadow-xl p-8 border-2 border-amber-400 rounded-3xl overflow-hidden transition-shadow grow scrollbar-hide">
-            <BarChartComponent token={token}/>
+            <BarChartComponent token={token} />
           </div>
           <div className="max-w-[400px] shrink-0">
             <Leaderboard leaderboards={leaderboardData} />

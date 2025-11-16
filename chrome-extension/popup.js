@@ -13,53 +13,63 @@ let currentPreset = 0;
 let timerInterval;
 
 // Load saved state from storage
-chrome.storage.local.get(["timeOffset", "running", "currentPreset", "startTimestamp", "totalDuration", "currentSubject"], (result) => {
-  // Restore all timer state
-  if (result.timeOffset !== undefined) {
-    timeOffset = result.timeOffset;
-  }
-  if (result.running !== undefined) {
-    running = result.running;
-  }
-  if (result.currentPreset !== undefined) {
-    currentPreset = result.currentPreset;
-  }
-  if (result.startTimestamp !== undefined) {
-    startTimestamp = result.startTimestamp;
-  }
-  if (result.totalDuration !== undefined) {
-    totalDuration = result.totalDuration;
-  } else {
-    // Initialize totalDuration if not set
-    totalDuration = timePresets[currentPreset] * 1000;
-  }
-  if (result.currentSubject !== undefined) {
-    currentSubject = result.currentSubject;
-    subjectSelect.value = currentSubject;
-  }
+chrome.storage.local.get(
+  [
+    "timeOffset",
+    "running",
+    "currentPreset",
+    "startTimestamp",
+    "totalDuration",
+    "currentSubject",
+  ],
+  (result) => {
+    // Restore all timer state
+    if (result.timeOffset !== undefined) {
+      timeOffset = result.timeOffset;
+    }
+    if (result.running !== undefined) {
+      running = result.running;
+    }
+    if (result.currentPreset !== undefined) {
+      currentPreset = result.currentPreset;
+    }
+    if (result.startTimestamp !== undefined) {
+      startTimestamp = result.startTimestamp;
+    }
+    if (result.totalDuration !== undefined) {
+      totalDuration = result.totalDuration;
+    } else {
+      // Initialize totalDuration if not set
+      totalDuration = timePresets[currentPreset] * 1000;
+    }
+    if (result.currentSubject !== undefined) {
+      currentSubject = result.currentSubject;
+      subjectSelect.value = currentSubject;
+    }
 
-  updateButtonVisibility();
+    updateButtonVisibility();
 
-  // If timer was running, resume it
-  if (running) {
-    updateTimer();
-  } else if (timeOffset > 0) {
-    // If paused, show the current progress
-    updateTimerDisplay();
+    // If timer was running, resume it
+    if (running) {
+      updateTimer();
+    } else if (timeOffset > 0) {
+      // If paused, show the current progress
+      updateTimerDisplay();
+    }
+
+    // Save state periodically
+    setInterval(() => {
+      chrome.storage.local.set({
+        timeOffset,
+        running,
+        currentPreset,
+        startTimestamp,
+        totalDuration,
+        currentSubject,
+      });
+    }, 100);
   }
-
-  // Save state periodically
-  setInterval(() => {
-    chrome.storage.local.set({
-      timeOffset,
-      running,
-      currentPreset,
-      startTimestamp,
-      totalDuration,
-      currentSubject,
-    });
-  }, 100);
-});
+);
 
 let token = "";
 let currentSubject = "Math";
@@ -134,7 +144,9 @@ function startPomodoro() {
 
 // Separate function to update display without scheduling next update
 function updateTimerDisplay() {
-  const elapsed = running ? Date.now() - startTimestamp + timeOffset : timeOffset;
+  const elapsed = running
+    ? Date.now() - startTimestamp + timeOffset
+    : timeOffset;
   const progressSeconds = Math.floor(elapsed / 1000);
   const newProgress = (elapsed / totalDuration) * 100;
 
@@ -145,14 +157,20 @@ function updateTimerDisplay() {
     .toString()
     .padStart(2, "0")}:${Math.floor((progressSeconds % 3600) / 60)
     .toString()
-    .padStart(2, "0")}:${((progressSeconds % 3600) % 60).toString().padStart(2, "0")}`;
+    .padStart(2, "0")}:${((progressSeconds % 3600) % 60)
+    .toString()
+    .padStart(2, "0")}`;
 }
 
 function updateTimer() {
   if (progress == 0) {
     fetch(`${backendURL}/api/logging/startTime`, {
       method: "POST",
-      body: JSON.stringify({ timestamp: Date.now(), token, subject: currentSubject }),
+      body: JSON.stringify({
+        timestamp: Date.now(),
+        token,
+        subject: currentSubject,
+      }),
     });
   }
 
@@ -174,7 +192,9 @@ function updateTimer() {
     .toString()
     .padStart(2, "0")}:${Math.floor((progressSeconds % 3600) / 60)
     .toString()
-    .padStart(2, "0")}:${((progressSeconds % 3600) % 60).toString().padStart(2, "0")}`;
+    .padStart(2, "0")}:${((progressSeconds % 3600) % 60)
+    .toString()
+    .padStart(2, "0")}`;
 
   if (!running) return;
   if (progress < 100) {
