@@ -16,8 +16,8 @@ export default function Home() {
     <main>
       <p>
         <Streaks entries={entries}/>
-        <StudyStats studyMinutes={120} averageStudyLength={30} />
         </p>
+        <p><StudyStats studyMinutes={120} averageStudyLength={30} /></p>
       
     </main>
   );

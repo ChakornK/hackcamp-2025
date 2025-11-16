@@ -12,7 +12,7 @@ export default function StudyStats({ studyMinutes, averageStudyLength }) {
                 <div className="vertical-divider"></div>
                 <div className="stat-item">
                     <p className="stat-value">{averageStudyLength}</p>
-                    <h3 className="stat-label">Average study<br/>length</h3>
+                    <h3 className="stat-label">Average study length</h3>
                 </div>
             </div>
         </div>
