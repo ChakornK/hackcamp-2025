@@ -1,6 +1,10 @@
+"use client";
+import React from "react";
 import Streaks from "./components/streaks";
 import StudyStats from "./components/studystats";
-import Leaderboard from "./components/Leaderboard";
+import Leaderboard from "./components/leaderboard";
+import BarChartComponent from "./components/chart";
+import { useRouter } from "next/navigation";
 
 const entries = [
   { date: "2025-11-10" },
@@ -25,11 +29,16 @@ export default function Home() {
       title: "Hall of shame :(",
       data: [
         { rank: 1, name: "Donald Trump", value: "35%" },
-        { rank: 2, name: "Big Beautiful Bill", value: "42%" },
+        {
+          rank: 2,
+          name: "Big Beautiful Billy Joel this is to test long names",
+          value: "42%",
+        },
         { rank: 3, name: "Diddy Blud", value: "67%" },
       ],
     },
   ];
+  const router = useRouter();
 
   const Timer = () => (
     <div className="flex justify-center items-center bg-orange-50 shadow-md hover:shadow-xl p-8 border-2 border-orange-400 rounded-3xl min-h-[200px] transition-shadow">
@@ -37,17 +46,23 @@ export default function Home() {
     </div>
   );
 
-  const Graph = () => (
-    <div className="flex justify-center items-center bg-white shadow-md hover:shadow-xl p-8 rounded-3xl h-full transition-shadow">
-      Graph Component
-    </div>
-  );
+  const handleGoToSignup = () => {
+    router.push("/signup");
+  };
 
   return (
     <main className="bg-[#E5E7EB] p-8 min-h-screen">
-      <h1 className="mb-8 font-bold text-5xl text-center">
-        Reel Rewards Dashboard
-      </h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="mb-8 font-bold text-5xl text-center">
+          Reel Rewards Dashboard
+        </h1>
+        <button
+          onClick={handleGoToSignup}
+          className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-semibold text-white transition-colors"
+        >
+          Go to Sign Up
+        </button>
+      </div>
       <div className="space-y-6 mx-auto max-w-7xl">
         <div className="gap-6 grid grid-cols-3">
           <Timer />
@@ -55,11 +70,11 @@ export default function Home() {
           <StudyStats studyMinutes={120} averageStudyLength={30} />
         </div>
 
-        <div className="gap-6 grid grid-cols-3">
-          <div className="col-span-2">
-            <Graph />
+        <div className="gap-6 grid grid-cols-[2fr_400px]">
+          <div className="bg-white shadow-md hover:shadow-xl p-8 rounded-3xl min-w-0 max-h-[500px] overflow-auto transition-shadow scrollbar-hide">
+            <BarChartComponent />
           </div>
-          <div>
+          <div className="min-w-0 max-w-[400px]">
             <Leaderboard leaderboards={leaderboardData} />
           </div>
         </div>
