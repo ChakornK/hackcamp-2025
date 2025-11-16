@@ -292,3 +292,8 @@ loginButton.addEventListener("click", () => {
       }
     });
 });
+
+const headerTitle = document.getElementById("header-title");
+headerTitle.addEventListener("click", () => {
+  chrome.tabs.create({ url: "http://localhost:3000/" });
+});
