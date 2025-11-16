@@ -1,11 +1,10 @@
 "use client";
 import React from "react";
-import Streaks from "./components/streaks";
-import StudyStats from "./components/studystats";
-import Leaderboard from "./components/leaderboard";
-import BarChartComponent from "./components/chart";
-import { useRouter } from "next/navigation";
-import Timer from "./components/timer";
+import Streaks from "./components/Streaks";
+import StudyStats from "./components/StudyStats";
+import Leaderboard from "./components/Leaderboard";
+import BarChartComponent from "./components/Chart";
+import Timer from "./components/Timer";
 
 const entries = [
   { date: "2025-11-10" },
@@ -43,7 +42,9 @@ export default function Home() {
   return (
     <main className="bg-gray-200 p-8 min-h-screen">
       <div className="top-0 right-0 left-0 z-10 fixed flex justify-between items-center bg-gray-100 px-8 h-24">
-        <h1 className="hidden md:block font-bold text-5xl text-center">Reel Rewards Dashboard</h1>
+        <h1 className="hidden md:block font-bold text-5xl text-center">
+          Reel Rewards Dashboard
+        </h1>
         <h1 className="md:hidden block font-bold text-2xl">
           Reel<br></br>Rewards
         </h1>
