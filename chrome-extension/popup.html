@@ -17,7 +17,7 @@
       }
 
       main {
-        width: 300px;
+        width: 350px;
         height: 500px;
       }
       #main-container {
@@ -67,12 +67,22 @@
       .gray {
         background: #363636;
       }
+
+      .row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.75rem;
+      }
     </style>
   </head>
   <body>
     <main>
       <div id="main-container">
-        <h1>Reel Rewards</h1>
+        <div class="row">
+          <img src="./icon.png" alt="" width="40px" style="filter: invert(1)" />
+          <h1>Reel Rewards</h1>
+        </div>
         <p>Reel status:</p>
 
         <div id="timer-container">
