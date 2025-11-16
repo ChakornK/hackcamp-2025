@@ -15,7 +15,7 @@
         font-family: "Fredoka", sans-serif;
       }
 
-      body {
+      main {
         display: flex;
         flex-direction: column;
         gap: 1rem;
@@ -23,6 +23,8 @@
         background: #000;
         color: #fff;
         font-family: sans-serif;
+        width: 300px;
+        height: 500px;
       }
       h1 {
         font-weight: 500;
@@ -33,17 +35,72 @@
         align-items: center;
         justify-content: space-evenly;
       }
+      #timer-circle {
+        transition: stroke-dasharray 1s linear;
+      }
     </style>
   </head>
   <body>
-    <h1>Reel Rewards</h1>
-    <p>Reel status:</p>
+    <main>
+      <h1>Reel Rewards</h1>
+      <p>Reel status:</p>
 
-    <!-- TIMER -->
+      <div id="timer-container">
+        <svg viewBox="0 0 100 100">
+          <circle stroke="#111" stroke-width="5.5" cx="50" cy="50" r="30" fill="none" />
+          <circle
+            id="timer-circle"
+            transform="rotate(-90 50 50)"
+            stroke-linecap="round"
+            stroke="#fff"
+            stroke-width="5.5"
+            cx="50"
+            cy="50"
+            r="30"
+            fill="none"
+            pathLength="100"
+          />
+          <text id="timer-text" font-size="10" x="50" y="50" text-anchor="middle" dominant-baseline="middle" fill="#fff">0%</text>
+        </svg>
+      </div>
 
-    <div class="action-button-row">
-      <button>Start</button>
-      <button>Stop</button>
-    </div>
+      <div class="action-button-row">
+        <button>Start</button>
+        <button>Stop</button>
+      </div>
+    </main>
+
+    <script>
+      const timerCircle = document.getElementById("timer-circle");
+      const timerText = document.getElementById("timer-text");
+
+      let progress = 0;
+      let progressSeconds = 0;
+      const totalDuration = 25 * 60 * 1000; // 25 minutes
+      const updateInterval = 1000; // Update every 1s
+
+      function updateTimer() {
+        progress += (updateInterval / totalDuration) * 100;
+        progressSeconds += updateInterval / 1000;
+        if (progress > 100) progress = 100;
+
+        timerCircle.style.strokeDasharray = `${progress} ${100 - progress}`;
+        timerText.textContent = `${Math.floor(progressSeconds / 3600)
+          .toString()
+          .padStart(2, "0")}:${Math.floor((progressSeconds % 3600) / 60)
+          .toString()
+          .padStart(2, "0")}:${((progressSeconds % 3600) % 60).toString().padStart(2, "0")}`;
+
+        if (progress < 100) {
+          setTimeout(updateTimer, updateInterval);
+        }
+      }
+
+      // Initialize strokeDasharray
+      timerCircle.style.strokeDasharray = `0 100`;
+
+      // Start the timer
+      updateTimer();
+    </script>
   </body>
 </html>
