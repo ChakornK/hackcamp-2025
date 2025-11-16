@@ -7,5 +7,10 @@
     "default_popup": "popup.html",
     "default_icon": "icon.png"
   },
-  "permissions": ["storage"]
+  "permissions": ["storage", "scripting"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "host_permissions": ["https://*.instagram.com/*", "https://*.youtube.com/*", "https://*.reddit.com/*"]
 }
