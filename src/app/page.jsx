@@ -1,10 +1,14 @@
 "use client";
 import React from "react";
-import Streaks from "./components/Streaks";
-import StudyStats from "./components/StudyStats";
-import Leaderboard from "./components/Leaderboard";
-import BarChartComponent from "./components/Chart";
-import Timer from "./components/Timer";
+import { useContext, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { GlobalContext } from "./lib/globalState";
+import Streaks from "./components/streaks";
+import StudyStats from "./components/studystats";
+import Leaderboard from "./components/leaderboard";
+import BarChartComponent from "./components/chart";
+import Timer from "./components/timer";
+
 
 const entries = [
   { date: "2025-11-10" },
@@ -16,6 +20,21 @@ const entries = [
 ];
 
 export default function Home() {
+  const { token } = useContext(GlobalContext);
+  const router = useRouter();
+
+  // Remove or comment out this redirect for now
+  // useEffect(() => {
+  //   if (!token) {
+  //     router.push("/landing");
+  //   }
+  // }, [token, router]);
+
+  // Remove this conditional render
+  // if (!token) {
+  //   return null;
+  // }
+
   const leaderboardData = [
     {
       title: "Leaderboard",
