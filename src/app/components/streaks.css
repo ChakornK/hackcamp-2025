@@ -1,0 +1,27 @@
+.book-container {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+.book-emoji {
+    font-size: 2rem;
+    transition: opacity 0.3s ease;
+}
+
+.streaks-section {
+    text-align: center;
+    border: 1px solid lightgrey;
+    background-color: lightgrey;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px lightgrey;
+    width: 400px;
+}
+
+.streak-count {
+    font-size: 1.2rem;
+    margin-top: 5px;
+}

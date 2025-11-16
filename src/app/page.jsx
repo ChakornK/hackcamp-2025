@@ -1,7 +1,18 @@
+import Streaks from './components/streaks';
+
+const entries = [
+  { date: '2025-11-09' },
+  { date: '2025-11-10' },
+  { date: '2025-11-11' },
+  { date: '2025-11-13' },
+  { date: '2025-11-14' },
+  { date: '2025-11-15' }, // Today
+];
+
 export default function Home() {
   return (
     <main>
-      <p>Hello skibidi sigmas!!</p>
+      <p><Streaks entries={entries}/></p>
     </main>
   );
 }
