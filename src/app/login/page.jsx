@@ -42,7 +42,7 @@ export default function SignupPage() {
   return (
     <main className="flex flex-col justify-center items-center bg-gray-100 min-h-screen">
       <div className="bg-white shadow-lg p-8 rounded-xl w-sm max-w-full">
-        <h2 className="mb-8 font-semibold text-3xl text-center">Sign Up</h2>
+        <h2 className="mb-8 font-semibold text-3xl text-center">Log in</h2>
 
         <p>Username</p>
         <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="mb-4 p-2 border border-gray-300 rounded-lg w-full" />
