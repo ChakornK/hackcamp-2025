@@ -1,16 +1,23 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../lib/globalState";
 import { LogOut } from "lucide-react";
 import QRCodePopup from "./QRCode";
 
 export const Navbar = () => {
   const pathname = usePathname();
-  const { setToken, setUsername, username } = useContext(GlobalContext);
+  const router = useRouter();
+  const { token, setToken, setUsername, username } = useContext(GlobalContext);
 
   const [contextMenuShown, setContextMenuShown] = useState(false);
+
+  useEffect(() => {
+    if (pathname === "/dashboard" && !token) {
+      router.push("/signup");
+    }
+  }, [pathname]);
 
   if (pathname === "/signup" || pathname === "/login") {
     return null;
@@ -19,20 +26,14 @@ export const Navbar = () => {
       <>
         <div className="top-6 right-8 z-20 fixed flex items-center gap-3">
           <QRCodePopup />
-          <button
-            className="flex items-center bg-gray-100 hover:bg-white px-4 py-2 rounded-xl cursor-pointer"
-            onClick={() => setContextMenuShown(true)}
-          >
+          <button className="flex items-center bg-gray-100 hover:bg-white px-4 py-2 rounded-xl cursor-pointer" onClick={() => setContextMenuShown(true)}>
             <p className="text-lg">
               Logged in as <span className="font-bold">{username}</span>
             </p>
           </button>
         </div>
         {contextMenuShown && (
-          <div
-            className="top-0 right-0 bottom-0 left-0 z-20 fixed"
-            onClick={() => setContextMenuShown(false)}
-          >
+          <div className="top-0 right-0 bottom-0 left-0 z-20 fixed" onClick={() => setContextMenuShown(false)}>
             <div className="top-18 right-8 fixed flex flex-col justify-center items-stretch bg-white shadow-lg mt-2 p-1 rounded-xl w-40">
               <button
                 onClick={() => {

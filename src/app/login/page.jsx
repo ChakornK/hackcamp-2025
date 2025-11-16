@@ -60,8 +60,14 @@ export default function SignupPage() {
           </button>
         </div>
 
-        <button onClick={handleSubmit} className="bg-blue-500 hover:bg-blue-600 mt-4 px-4 py-2 rounded-lg w-full text-white">
+        <button onClick={handleSubmit} className="bg-blue-500 hover:bg-blue-600 mt-4 px-4 py-2 rounded-lg w-full text-white cursor-pointer">
           Log in
+        </button>
+        <button
+          onClick={() => router.push("/signup")}
+          className="bg-gray-50 hover:bg-gray-200 mt-4 px-4 py-2 border border-blue-500 rounded-lg w-full text-blue-500 cursor-pointer"
+        >
+          Sign up instead
         </button>
       </div>
     </main>
