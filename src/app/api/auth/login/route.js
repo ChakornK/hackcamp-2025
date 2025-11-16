@@ -12,8 +12,7 @@ export async function POST(req) {
   if (user.hashedPassword !== hashedPassword) return Response.json({ error: "Invalid credentials" }, { status: 401 });
 
   const token = createToken(username);
-  userTokens[token] = username;
-  
+
   user.tokens.push(token);
   while (user.tokens.length > 10) {
     user.tokens.shift();

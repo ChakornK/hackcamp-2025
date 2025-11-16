@@ -25,6 +25,7 @@
         width: 350px;
         height: 450px;
         position: relative;
+        overflow: hidden;
       }
       #main-container {
         display: flex;
@@ -114,6 +115,24 @@
       .hidden {
         display: none;
       }
+
+      input[type="text"],
+      input[type="password"] {
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+      }
+      a {
+        color: #4989ea;
+        text-decoration: none;
+      }
+      .text-sm {
+        font-size: 0.875rem;
+      }
+      .text-center {
+        text-align: center;
+      }
     </style>
   </head>
   <body>
@@ -160,6 +179,17 @@
             <button class="gray" id="cancel-stop-button">Cancel</button>
             <button class="blue" id="confirm-stop-button">Stop</button>
           </div>
+        </div>
+      </div>
+
+      <div class="modal-bg" id="login-modal-bg">
+        <div class="modal-box" id="login-modal-box">
+          <input type="text" name="username" id="login-username" placeholder="Username" />
+          <input type="password" name="password" id="login-password" placeholder="Password" />
+          <div class="action-button-row">
+            <button class="gray" id="login-button">Log in</button>
+          </div>
+          <p class="text-sm text-center">You can create an account <a href="http://localhost:3000/signup" target="_blank">here</a></p>
         </div>
       </div>
     </main>

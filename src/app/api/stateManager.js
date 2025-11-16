@@ -1,2 +1,1 @@
-export const userTokens = {};
-export const sessionStartTimes = {}
+export const sessionStartTimes = {};

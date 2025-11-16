@@ -1,12 +1,14 @@
 const backendURL = "http://localhost:3000";
 let progress = 0;
 let progressSeconds = 0;
-const totalDuration = 0.25 * 60 * 1000; // 25 minutes
+const totalDuration = 0.025 * 60 * 1000; // 25 minutes
 const updateInterval = 1000; // Update every 1s
 let startTimestamp = 0;
 let timeOffset = 0;
 let timerInterval;
 let running = false;
+
+let token = "";
 
 const timerCircle = document.getElementById("timer-circle");
 const timerText = document.getElementById("timer-text");
@@ -21,6 +23,12 @@ const confirmStopButton = document.getElementById("confirm-stop-button");
 const stopModalBg = document.getElementById("stop-modal-bg");
 const stopModalBox = document.getElementById("stop-modal-box");
 
+const loginModalBg = document.getElementById("login-modal-bg");
+const loginModalBox = document.getElementById("login-modal-box");
+const loginButton = document.getElementById("login-button");
+const loginUsername = document.getElementById("login-username");
+const loginPassword = document.getElementById("login-password");
+
 function updateButtonVisibility() {
   if (running) {
     notRunningButtons.classList.add("hidden");
@@ -34,7 +42,7 @@ function updateButtonVisibility() {
 function resetTimer(timerInterval) {
   fetch(`${backendURL}/api/logging/endTime`, {
     method: "POST",
-    body: JSON.stringify({ timestamp: Date.now(), token: "test" }),
+    body: JSON.stringify({ timestamp: Date.now(), token }),
   });
   clearTimeout(timerInterval);
   progress = 0;
@@ -55,7 +63,7 @@ function updateTimer() {
   if (progress == 0) {
     fetch(`${backendURL}/api/logging/startTime`, {
       method: "POST",
-      body: JSON.stringify({ timestamp: Date.now(), token: "test" }),
+      body: JSON.stringify({ timestamp: Date.now(), token }),
     });
   }
   progressSeconds = Math.floor((Date.now() - startTimestamp + timeOffset) / 1000);
@@ -80,22 +88,33 @@ function updateTimer() {
 // Initialize strokeDasharray
 timerCircle.style.strokeDasharray = `0 100`;
 
-const showModal = () => {
+const showStopModal = () => {
   stopModalBg.style.opacity = "1";
   stopModalBg.style.pointerEvents = "auto";
   stopModalBox.style.transform = "scale(1)";
 };
-const hideModal = () => {
+const hideStopModal = () => {
   stopModalBg.style.opacity = "0";
   stopModalBg.style.pointerEvents = "none";
   stopModalBox.style.transform = "scale(0.8)";
 };
 
+const showLoginModal = () => {
+  loginModalBg.style.opacity = "1";
+  loginModalBg.style.pointerEvents = "auto";
+  loginModalBox.style.transform = "scale(1)";
+};
+const hideLoginModal = () => {
+  loginModalBg.style.opacity = "0";
+  loginModalBg.style.pointerEvents = "none";
+  loginModalBox.style.transform = "scale(0.8)";
+};
+
 cancelStopButton.addEventListener("click", () => {
-  hideModal();
+  hideStopModal();
 });
 confirmStopButton.addEventListener("click", () => {
-  hideModal();
+  hideStopModal();
   resetTimer(timerInterval);
 });
 
@@ -115,7 +134,48 @@ pauseButton.addEventListener("click", () => {
 });
 
 stopButton.addEventListener("click", () => {
-  showModal();
+  showStopModal();
 });
 
 updateButtonVisibility();
+
+chrome.storage.local.get(["token"], (result) => {
+  if (!result.token) {
+    return showLoginModal();
+  }
+  fetch(`${backendURL}/api/auth/validateToken`, {
+    method: "POST",
+    body: JSON.stringify({ token: result.token }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (!data.valid) {
+        showLoginModal();
+      } else {
+        token = result.token;
+      }
+    });
+});
+loginButton.addEventListener("click", () => {
+  const username = loginUsername.value;
+  const password = loginPassword.value;
+
+  if (!username || !password) {
+    return alert("Please enter both username and password.");
+  }
+  fetch(`${backendURL}/api/auth/login`, {
+    method: "POST",
+    body: JSON.stringify({ username, password }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.token) {
+        token = data.token;
+        chrome.storage.local.set({ token: data.token }, () => {
+          hideLoginModal();
+        });
+      } else {
+        alert("Invalid username or password.");
+      }
+    });
+});

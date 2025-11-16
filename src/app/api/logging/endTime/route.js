@@ -2,58 +2,58 @@ import { User } from "../../lib/db";
 import { sessionStartTimes, userTokens } from "../../stateManager";
 
 export async function POST(req) {
-    const { timestamp, token } = await req.json()
-    if (Math.abs(Date.now()-timestamp) > 60 * 1000) {
-        return Response.json({error: "Invalid data"}, {status: 400})
+  const { timestamp, token } = await req.json();
+  if (!token) {
+    return Response.json({ error: "No token provided" }, { status: 400 });
+  }
+  if (Math.abs(Date.now() - timestamp) > 60 * 1000) {
+    return Response.json({ error: "Invalid data" }, { status: 400 });
+  }
+
+  if (!sessionStartTimes[token]) {
+    return Response.json({ error: "No session found " }, { status: 400 });
+  }
+
+  const startTime = sessionStartTimes[token];
+  const endTime = timestamp;
+  const durationSeconds = Math.floor((endTime - startTime) / 1000);
+
+  const date = new Date(sessionStartTimes[token]).toISOString().split("T")[0];
+
+  try {
+    const username = token.split("-")[0];
+    if (!username) return Response.json({ error: "Invalid token" }, { status: 401 });
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return Response.json({ error: "User not found" }, { status: 404 });
     }
 
-    if (!sessionStartTimes[token]) {
-        return Response.json({ error: "No session found "}, { status: 400 })
+    const existingRecordIndex = user.records.findIndex((record) => record.date === date);
+
+    if (existingRecordIndex !== -1) {
+      user.records[existingRecordIndex].totalStudyDuration += durationSeconds;
+    } else {
+      user.records.push({
+        date: date,
+        totalStudyDuration: durationSeconds,
+      });
     }
 
-    const startTime = sessionStartTimes[token]
-    const endTime = timestamp
-    const durationSeconds = Math.floor((endTime-startTime) / 1000)
+    await user.save();
 
-    const date = (new Date(sessionStartTimes[token])).toISOString().split("T")[0]
+    delete sessionStartTimes[token];
 
-    try {
-        const username = userTokens[token];
-        if (!username) return Response.json({error: "Invalid token"}, {status: 401});
-        const user = await User.findOne({ username });
-
-        if (!user) {
-            return Response.json({ error: "User not found" }, { status: 404 })
-        }
-
-
-        const existingRecordIndex = user.records.findIndex(
-            (record) => record.date === date
-        )
-
-        if (existingRecordIndex !== -1) {
-            user.records[existingRecordIndex].totalStudyDuration += durationSeconds
-        } else {
-            user.records.push({
-                date: date,
-                totalStudyDuration: durationSeconds,
-            })
-        }
-
-        await user.save()
-
-        delete sessionStartTimes[token]
-
-        return Response.json(
-            {
-                message: "OK",
-                duration: durationSeconds,
-                date: date
-            },
-            { status: 200 }
-        )
-     } catch (error) {
-        console.log("Database error:", error);
-        return Response.json({ error: "Database error" }, { status: 500 })
-     }
+    return Response.json(
+      {
+        message: "OK",
+        duration: durationSeconds,
+        date: date,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.log("Database error:", error);
+    return Response.json({ error: "Database error" }, { status: 500 });
+  }
 }
