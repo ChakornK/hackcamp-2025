@@ -1,22 +1,46 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { GlobalContext } from "../lib/globalState";
+import { LogOut } from "lucide-react";
 
 export const Navbar = () => {
   const pathname = usePathname();
-  const { username } = useContext(GlobalContext);
+  const { setToken, setUsername, username } = useContext(GlobalContext);
+
+  const [contextMenuShown, setContextMenuShown] = useState(false);
 
   if (pathname === "/signup" || pathname === "/login") {
     return null;
   } else if (username) {
     return (
-      <div className="top-8 right-8 z-10 fixed flex items-stretch">
-        <p>
-          Logged in as <span className="font-bold">{username}</span>
-        </p>
-      </div>
+      <>
+        <button
+          className="top-8 right-8 fixed flex items-center bg-gray-100 hover:bg-white px-4 py-2 rounded-xl cursor-pointer"
+          onClick={() => setContextMenuShown(true)}
+        >
+          <p className="text-lg">
+            Logged in as <span className="font-bold">{username}</span>
+          </p>
+        </button>
+        {contextMenuShown && (
+          <div className="top-0 right-0 bottom-0 left-0 fixed" onClick={() => setContextMenuShown(false)}>
+            <div className="top-18 right-8 fixed flex flex-col justify-center items-stretch bg-white shadow-lg mt-2 p-1 rounded-xl w-40">
+              <button
+                onClick={() => {
+                  setToken(null);
+                  setUsername(null);
+                }}
+                className="flex items-center gap-2 hover:bg-red-500 p-2 rounded-lg hover:text-white transition-colors cursor-pointer"
+              >
+                <LogOut size={16} />
+                Log out
+              </button>
+            </div>
+          </div>
+        )}
+      </>
     );
   } else {
     return (
