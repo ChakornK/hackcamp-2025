@@ -17,7 +17,7 @@ export default function StudyStats({ studyMinutes, averageStudyLength }) {
             {averageStudyLength}
           </p>
           <h3 className="mt-2.5 font-semibold text-black text-sm leading-tight">
-            Average study length
+            Average study time
           </h3>
         </div>
       </div>
