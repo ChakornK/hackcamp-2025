@@ -65,7 +65,7 @@ export default function Streaks({ entries }) {
     return (
        
        <div className="streaks-section">
-            <h2>Current Streak 🔥</h2>
+            <h2 className="streaks-title">Current Streak 🔥</h2>
             <div className="book-container">
                 {last7Days.map((day, index) => (
                     <span 

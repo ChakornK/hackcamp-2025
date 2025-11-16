@@ -1,4 +1,6 @@
 import Streaks from './components/streaks';
+import StudyStats from './components/studystats';
+
 
 const entries = [
   { date: '2025-11-09' },
@@ -12,7 +14,11 @@ const entries = [
 export default function Home() {
   return (
     <main>
-      <p><Streaks entries={entries}/></p>
+      <p>
+        <Streaks entries={entries}/>
+        <StudyStats studyMinutes={120} averageStudyLength={30} />
+        </p>
+      
     </main>
   );
 }
