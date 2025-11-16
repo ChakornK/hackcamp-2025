@@ -13,7 +13,7 @@ let currentPreset = 0;
 let timerInterval;
 
 // Load saved state from storage
-chrome.storage.local.get(["timeOffset", "running", "currentPreset", "startTimestamp", "totalDuration"], (result) => {
+chrome.storage.local.get(["timeOffset", "running", "currentPreset", "startTimestamp", "totalDuration", "currentSubject"], (result) => {
   // Restore all timer state
   if (result.timeOffset !== undefined) {
     timeOffset = result.timeOffset;
@@ -32,6 +32,10 @@ chrome.storage.local.get(["timeOffset", "running", "currentPreset", "startTimest
   } else {
     // Initialize totalDuration if not set
     totalDuration = timePresets[currentPreset] * 1000;
+  }
+  if (result.currentSubject !== undefined) {
+    currentSubject = result.currentSubject;
+    subjectSelect.value = currentSubject;
   }
 
   updateButtonVisibility();
@@ -52,6 +56,7 @@ chrome.storage.local.get(["timeOffset", "running", "currentPreset", "startTimest
       currentPreset,
       startTimestamp,
       totalDuration,
+      currentSubject,
     });
   }, 100);
 });
