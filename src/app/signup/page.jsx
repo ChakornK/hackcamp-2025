@@ -1,44 +1,60 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useCallback, useState } from "react";
 
 export default function AuthInterface() {
   const [isSignUp, setIsSignUp] = useState(true);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const handleSubmit = () => {
-    if (!email || !password) {
-      setMessage('Please fill in all fields');
+  const handleSubmit = useCallback(async () => {
+    if (!username || !password) {
+      setMessage("Please fill in all fields");
       return;
     }
 
     if (isSignUp) {
-      setMessage(`Account created successfully for ${email}!`);
+      const { token } = await fetch("/api/auth/signup", {
+        method: "POST",
+        body: JSON.stringify({ username, password }),
+      }).then((res) => res.json());
+      if (!token) {
+        setMessage("Failed to create account");
+        return;
+      }
+      setMessage(`Account created successfully for ${username}!`);
     } else {
-      setMessage(`Signed in as ${email}!`);
+      const { token } = await fetch("/api/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ username, password }),
+      }).then((res) => res.json());
+      if (!token) {
+        setMessage("Invalid username or password");
+        return;
+      }
+      setMessage(`Signed in as ${username}!`);
     }
 
     // Simulate successful authentication
     setTimeout(() => {
       setIsAuthenticated(true);
     }, 1000);
-  };
+  });
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    setEmail('');
-    setPassword('');
-    setMessage('');
+    setUsername("");
+    setPassword("");
+    setMessage("");
     setIsSignUp(false);
   };
 
   const toggleMode = () => {
     setIsSignUp(!isSignUp);
-    setMessage('');
-    setEmail('');
-    setPassword('');
+    setMessage("");
+    setUsername("");
+    setPassword("");
   };
 
   // Show main page when authenticated
@@ -55,7 +71,7 @@ export default function AuthInterface() {
           <div style={styles.welcomeCard}>
             <h2 style={styles.welcomeTitle}>🎉 Successfully Logged In!</h2>
             <p style={styles.welcomeText}>
-              You're now signed in as <strong>{email}</strong>
+              You're now signed in as <strong>{username}</strong>
             </p>
             <p style={styles.infoText}>
               This is where your main dashboard content would appear.
@@ -72,46 +88,30 @@ export default function AuthInterface() {
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        <h2 style={styles.title}>{isSignUp ? 'Sign Up' : 'Sign In'}</h2>
-        
+        <h2 style={styles.title}>{isSignUp ? "Sign Up" : "Sign In"}</h2>
+
         <div style={styles.formContainer}>
           <div style={styles.inputGroup}>
             <label style={styles.label}>Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              style={styles.input}
-            />
+            <input type="email" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Enter your email" style={styles.input} />
           </div>
 
           <div style={styles.inputGroup}>
             <label style={styles.label}>Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              style={styles.input}
-            />
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter your password" style={styles.input} />
           </div>
 
           <button onClick={handleSubmit} style={styles.submitButton}>
-            {isSignUp ? 'Sign Up' : 'Sign In'}
+            {isSignUp ? "Sign Up" : "Sign In"}
           </button>
         </div>
 
-        {message && (
-          <p style={styles.message}>{message}</p>
-        )}
+        {message && <p style={styles.message}>{message}</p>}
 
         <div style={styles.toggleContainer}>
-          <p style={styles.toggleText}>
-            {isSignUp ? 'Already have an account?' : "Don't have an account?"}
-          </p>
+          <p style={styles.toggleText}>{isSignUp ? "Already have an account?" : "Don't have an account?"}</p>
           <button onClick={toggleMode} style={styles.toggleButton}>
-            {isSignUp ? 'Sign In' : 'Sign Up'}
+            {isSignUp ? "Sign In" : "Sign Up"}
           </button>
         </div>
       </div>
@@ -121,145 +121,145 @@ export default function AuthInterface() {
 
 const styles = {
   container: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '100vh',
-    fontFamily: 'Arial, sans-serif',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: "100vh",
+    fontFamily: "Arial, sans-serif",
   },
   card: {
-    backgroundColor: 'white',
-    padding: '40px',
-    borderRadius: '15px',
-    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
-    width: '100%',
-    maxWidth: '400px',
+    backgroundColor: "white",
+    padding: "40px",
+    borderRadius: "15px",
+    boxShadow: "0 10px 30px rgba(0, 0, 0, 0.2)",
+    width: "100%",
+    maxWidth: "400px",
   },
   title: {
-    fontSize: '2rem',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: '30px',
-    color: '#333',
+    fontSize: "2rem",
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: "30px",
+    color: "#333",
   },
   formContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px',
+    display: "flex",
+    flexDirection: "column",
+    gap: "20px",
   },
   inputGroup: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px',
+    display: "flex",
+    flexDirection: "column",
+    gap: "8px",
   },
   label: {
-    fontSize: '0.9rem',
-    fontWeight: '600',
-    color: '#555',
+    fontSize: "0.9rem",
+    fontWeight: "600",
+    color: "#555",
   },
   input: {
-    padding: '12px',
-    fontSize: '1rem',
-    border: '2px solid #ddd',
-    borderRadius: '8px',
-    outline: 'none',
-    transition: 'border-color 0.3s',
+    padding: "12px",
+    fontSize: "1rem",
+    border: "2px solid #ddd",
+    borderRadius: "8px",
+    outline: "none",
+    transition: "border-color 0.3s",
   },
   submitButton: {
-    padding: '14px',
-    fontSize: '1.1rem',
-    fontWeight: 'bold',
-    color: 'white',
-    backgroundColor: '#667eea',
-    border: 'none',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    marginTop: '10px',
-    transition: 'background-color 0.3s',
+    padding: "14px",
+    fontSize: "1.1rem",
+    fontWeight: "bold",
+    color: "white",
+    backgroundColor: "#667eea",
+    border: "none",
+    borderRadius: "8px",
+    cursor: "pointer",
+    marginTop: "10px",
+    transition: "background-color 0.3s",
   },
   message: {
-    marginTop: '20px',
-    padding: '12px',
-    backgroundColor: '#e8f5e9',
-    color: '#2e7d32',
-    borderRadius: '8px',
-    textAlign: 'center',
-    fontSize: '0.95rem',
+    marginTop: "20px",
+    padding: "12px",
+    backgroundColor: "#e8f5e9",
+    color: "#2e7d32",
+    borderRadius: "8px",
+    textAlign: "center",
+    fontSize: "0.95rem",
   },
   toggleContainer: {
-    marginTop: '25px',
-    textAlign: 'center',
+    marginTop: "25px",
+    textAlign: "center",
   },
   toggleText: {
-    color: '#666',
-    fontSize: '0.95rem',
-    marginBottom: '10px',
+    color: "#666",
+    fontSize: "0.95rem",
+    marginBottom: "10px",
   },
   toggleButton: {
-    background: 'none',
-    border: 'none',
-    color: '#667eea',
-    fontSize: '1rem',
-    fontWeight: 'bold',
-    cursor: 'pointer',
-    textDecoration: 'underline',
+    background: "none",
+    border: "none",
+    color: "#667eea",
+    fontSize: "1rem",
+    fontWeight: "bold",
+    cursor: "pointer",
+    textDecoration: "underline",
   },
   mainContainer: {
-    minHeight: '100vh',
-    background: '#E5E7EB',
-    fontFamily: 'Arial, sans-serif',
+    minHeight: "100vh",
+    background: "#E5E7EB",
+    fontFamily: "Arial, sans-serif",
   },
   header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '20px 40px',
-    backgroundColor: 'white',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "20px 40px",
+    backgroundColor: "white",
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
   },
   mainTitle: {
-    fontSize: '1.8rem',
-    fontWeight: 'bold',
-    color: '#333',
+    fontSize: "1.8rem",
+    fontWeight: "bold",
+    color: "#333",
   },
   logoutButton: {
-    padding: '10px 24px',
-    fontSize: '1rem',
-    fontWeight: '600',
-    color: 'white',
-    backgroundColor: '#dc2626',
-    border: 'none',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    transition: 'background-color 0.3s',
+    padding: "10px 24px",
+    fontSize: "1rem",
+    fontWeight: "600",
+    color: "white",
+    backgroundColor: "#dc2626",
+    border: "none",
+    borderRadius: "8px",
+    cursor: "pointer",
+    transition: "background-color 0.3s",
   },
   mainContent: {
-    padding: '40px',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: "40px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   welcomeCard: {
-    backgroundColor: 'white',
-    padding: '50px',
-    borderRadius: '15px',
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-    textAlign: 'center',
-    maxWidth: '600px',
+    backgroundColor: "white",
+    padding: "50px",
+    borderRadius: "15px",
+    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+    textAlign: "center",
+    maxWidth: "600px",
   },
   welcomeTitle: {
-    fontSize: '2.5rem',
-    color: '#333',
-    marginBottom: '20px',
+    fontSize: "2.5rem",
+    color: "#333",
+    marginBottom: "20px",
   },
   welcomeText: {
-    fontSize: '1.2rem',
-    color: '#555',
-    marginBottom: '30px',
+    fontSize: "1.2rem",
+    color: "#555",
+    marginBottom: "30px",
   },
   infoText: {
-    fontSize: '1rem',
-    color: '#666',
-    lineHeight: '1.6',
+    fontSize: "1rem",
+    color: "#666",
+    lineHeight: "1.6",
   },
 };
