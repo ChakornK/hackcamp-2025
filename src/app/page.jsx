@@ -1,3 +1,4 @@
+import BarChartComponent from './components/chart';
 import Streaks from './components/streaks';
 import StudyStats from './components/studystats';
 import Leaderboard from './components/leaderboard';
@@ -36,6 +37,7 @@ export default function Home() {
       <Streaks entries={entries}/>
       <StudyStats studyMinutes={120} averageStudyLength={30} />
       <Leaderboard leaderboards={leaderboardData} />
+      <BarChartComponent />
     </main>
   );
 }
