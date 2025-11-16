@@ -3,6 +3,7 @@ import React from "react";
 import Streaks from "./components/streaks";
 import StudyStats from "./components/studystats";
 import Leaderboard from "./components/leaderboard";
+import BarChartComponent from "./components/chart";
 import { useRouter } from "next/navigation";
 
 const entries = [
@@ -28,7 +29,11 @@ export default function Home() {
       title: "Hall of shame :(",
       data: [
         { rank: 1, name: "Donald Trump", value: "35%" },
-        { rank: 2, name: "Big Beautiful Bill", value: "42%" },
+        {
+          rank: 2,
+          name: "Big Beautiful Billy Joel this is to test long names",
+          value: "42%",
+        },
         { rank: 3, name: "Diddy Blud", value: "67%" },
       ],
     },
@@ -57,11 +62,11 @@ export default function Home() {
           <StudyStats studyMinutes={120} averageStudyLength={30} />
         </div>
 
-        <div className="gap-6 grid grid-cols-3">
-          <div className="col-span-2">
-            <Graph />
+        <div className="gap-6 grid grid-cols-[2fr_400px]">
+          <div className="bg-white shadow-md hover:shadow-xl p-8 rounded-3xl min-w-0 max-h-[500px] overflow-auto transition-shadow scrollbar-hide">
+            <BarChartComponent />
           </div>
-          <div>
+          <div className="min-w-0 max-w-[400px]">
             <Leaderboard leaderboards={leaderboardData} />
           </div>
         </div>
