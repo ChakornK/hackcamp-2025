@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
-:root {
-  font-family: "Fredoka", sans-serif;
+:root,
+* {
+  font-family: "Fredoka", sans-serif !important;
 }
 
 @layer utilities {
