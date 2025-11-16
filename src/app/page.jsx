@@ -1,6 +1,6 @@
 import Streaks from './components/streaks';
 import StudyStats from './components/studystats';
-import Leaderboard from "./components/Leaderboard";
+import Leaderboard from './components/leaderboard';
 
 const entries = [
   { date: '2025-11-09' },
