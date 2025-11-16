@@ -18,8 +18,8 @@ const notRunningButtons = document.getElementById("not-running-buttons");
 const runningButtons = document.getElementById("running-buttons");
 const cancelStopButton = document.getElementById("cancel-stop-button");
 const confirmStopButton = document.getElementById("confirm-stop-button");
-const modalBg = document.querySelector(".modal-bg");
-const modalBox = document.querySelector(".modal-box");
+const stopModalBg = document.getElementById("stop-modal-bg");
+const stopModalBox = document.getElementById("stop-modal-box");
 
 function updateButtonVisibility() {
   if (running) {
@@ -35,7 +35,7 @@ function resetTimer(timerInterval) {
   fetch(`${backendURL}/api/logging/endTime`, {
     method: "POST",
     body: JSON.stringify({ timestamp: Date.now(), token: "test" }),
-  })
+  });
   clearTimeout(timerInterval);
   progress = 0;
   progressSeconds = 0;
@@ -58,9 +58,7 @@ function updateTimer() {
       body: JSON.stringify({ timestamp: Date.now(), token: "test" }),
     });
   }
-  progressSeconds = Math.floor(
-    (Date.now() - startTimestamp + timeOffset) / 1000
-  );
+  progressSeconds = Math.floor((Date.now() - startTimestamp + timeOffset) / 1000);
   progress = ((Date.now() - startTimestamp + timeOffset) / totalDuration) * 100;
 
   timerCircle.style.strokeDasharray = `${progress} ${100 - progress}`;
@@ -68,9 +66,7 @@ function updateTimer() {
     .toString()
     .padStart(2, "0")}:${Math.floor((progressSeconds % 3600) / 60)
     .toString()
-    .padStart(2, "0")}:${((progressSeconds % 3600) % 60)
-    .toString()
-    .padStart(2, "0")}`;
+    .padStart(2, "0")}:${((progressSeconds % 3600) % 60).toString().padStart(2, "0")}`;
 
   if (progress < 100) {
     timerInterval = setTimeout(updateTimer, updateInterval);
@@ -85,14 +81,14 @@ function updateTimer() {
 timerCircle.style.strokeDasharray = `0 100`;
 
 const showModal = () => {
-  modalBg.style.opacity = "1";
-  modalBg.style.pointerEvents = "auto";
-  modalBox.style.transform = "scale(1)";
+  stopModalBg.style.opacity = "1";
+  stopModalBg.style.pointerEvents = "auto";
+  stopModalBox.style.transform = "scale(1)";
 };
 const hideModal = () => {
-  modalBg.style.opacity = "0";
-  modalBg.style.pointerEvents = "none";
-  modalBox.style.transform = "scale(0.8)";
+  stopModalBg.style.opacity = "0";
+  stopModalBg.style.pointerEvents = "none";
+  stopModalBox.style.transform = "scale(0.8)";
 };
 
 cancelStopButton.addEventListener("click", () => {
