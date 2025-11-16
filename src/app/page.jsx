@@ -1,7 +1,9 @@
-import BarChartComponent from './components/chart';
+"use client"
+import React from 'react';
 import Streaks from './components/streaks';
 import StudyStats from './components/studystats';
 import Leaderboard from './components/leaderboard';
+import { useRouter } from 'next/navigation';
 
 const entries = [
   { date: '2025-11-09' },
@@ -11,6 +13,8 @@ const entries = [
   { date: '2025-11-14' },
   { date: '2025-11-15' }, // Today
 ];
+
+
 
 export default function Home() {
   const leaderboardData = [
@@ -31,13 +35,25 @@ export default function Home() {
       ],
     },
   ];
+  const router = useRouter();
 
+    const handleGoToSignup = () => {
+    router.push('/signup');
+  };
   return ( 
     <main className="bg-[#E5E7EB] p-8 min-h-screen">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="font-bold text-3xl">Study Dashboard</h1>
+        <button 
+          onClick={handleGoToSignup}
+          className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-semibold text-white transition-colors"
+        >
+          Go to Sign Up
+        </button>
+      </div>
       <Streaks entries={entries}/>
       <StudyStats studyMinutes={120} averageStudyLength={30} />
       <Leaderboard leaderboards={leaderboardData} />
-      <BarChartComponent />
     </main>
   );
 }
