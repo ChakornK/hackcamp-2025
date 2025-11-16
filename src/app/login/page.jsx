@@ -19,15 +19,15 @@ export default function SignupPage() {
       return;
     }
 
-    const { token } = await fetch("/api/auth/signup", {
+    const { token } = await fetch("/api/auth/login", {
       method: "POST",
       body: JSON.stringify({ username, password }),
     }).then((res) => res.json());
     if (!token) {
-      toast.error("Failed to create account");
+      toast.error("Invalid username or password");
       return;
     }
-    toast.success(`Welcome, ${username}!`);
+    toast.success(`Welcome back, ${username}!`);
     setGlobalUsername(username);
 
     setToken(token);
@@ -61,7 +61,7 @@ export default function SignupPage() {
         </div>
 
         <button onClick={handleSubmit} className="bg-blue-500 hover:bg-blue-600 mt-4 px-4 py-2 rounded-lg w-full text-white">
-          Sign Up
+          Log in
         </button>
       </div>
     </main>
