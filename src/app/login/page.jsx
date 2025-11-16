@@ -35,7 +35,7 @@ export default function SignupPage() {
 
   useEffect(() => {
     if (token) {
-      router.push("/");
+      router.push("/dashboard");
     }
   }, [token]);
 
