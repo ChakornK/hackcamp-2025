@@ -11,7 +11,8 @@ export const Navbar = () => {
 
   const [contextMenuShown, setContextMenuShown] = useState(false);
 
-  if (pathname === "/signup" || pathname === "/login") {
+  // Hide navbar on landing, signup, and login pages
+  if (pathname === "/landing" || pathname === "/signup" || pathname === "/login") {
     return null;
   } else if (username) {
     return (
