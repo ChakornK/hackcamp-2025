@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
-import { useContext, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useContext } from "react";
 import { GlobalContext } from "./lib/globalState";
 import Streaks from "./components/Streaks";
 import StudyStats from "./components/StudyStats";
@@ -19,21 +18,6 @@ const entries = [
 ];
 
 export default function Home() {
-  const { token } = useContext(GlobalContext);
-  const router = useRouter();
-
-  // Remove or comment out this redirect for now
-  // useEffect(() => {
-  //   if (!token) {
-  //     router.push("/landing");
-  //   }
-  // }, [token, router]);
-
-  // Remove this conditional render
-  // if (!token) {
-  //   return null;
-  // }
-
   const leaderboardData = [
     {
       title: "Leaderboard",
