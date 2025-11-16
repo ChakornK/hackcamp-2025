@@ -1,17 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  BarChart,
-  Bar,
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from "recharts";
-
+import { BarChart, Bar, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 
 const dailyData = [
   { label: "Mon", math: 1, cs: 2, biology: 1 },
@@ -38,30 +28,23 @@ const weeklyData = [
   { label: "Week 12", math: 9, cs: 10, biology: 5 },
 ];
 
-// tool tip is the box which appears when hovering over chart element
 const CustomTooltip = ({ active, payload, label }) => {
-// for future reference, payload exists if you are hovering over a chart element
+  // for future reference, payload exists if you are hovering over a chart element
   if (active && payload && payload.length) {
     return (
       <div className="flex flex-col gap-1 bg-slate-900 p-3 rounded-md">
         <p className="font-semibold text-white">{label}</p>
-        {/* maps each bar element value on tooltip */}
         {payload.map((entry) => (
-          <p
-            key={entry.name}
-            style={{ color: entry.color }}
-            className="text-sm"
-          >
+          <p key={entry.name} style={{ color: entry.color }} className="text-sm">
             {entry.name}: {entry.value} hrs
           </p>
         ))}
-        <p className="text-white text-sm">Total: {payload.reduce((a,c)=>a+c.value,0,)} hrs</p>
+        <p className="text-white text-sm">Total: {payload.reduce((a, c) => a + c.value, 0)} hrs</p>
       </div>
     );
   }
   return null;
 };
-
 
 export default function BarChartComponent() {
   const [view, setView] = useState("daily");
@@ -73,34 +56,29 @@ export default function BarChartComponent() {
       <div className="flex gap-4 mb-4">
         <button
           onClick={() => setView("daily")}
-          className={`px-4 py-2 rounded-md ${
-            view === "daily" ? "bg-blue-600 text-white" : "bg-gray-200"
-          }`}
+          className={`px-4 py-2 rounded-md cursor-pointer ${view === "daily" ? "bg-yellow-600 text-white" : "bg-stone-400/20"}`}
         >
           Daily
         </button>
 
         <button
           onClick={() => setView("weekly")}
-          className={`px-4 py-2 rounded-md ${
-            view === "weekly" ? "bg-blue-600 text-white" : "bg-gray-200"
-          }`}
+          className={`px-4 py-2 rounded-md cursor-pointer ${view === "weekly" ? "bg-yellow-600 text-white" : "bg-stone-400/20"}`}
         >
           Weekly
         </button>
       </div>
 
-      {/* Chart Container */}
-      <div className="w-full h-80">
-        <ResponsiveContainer width={1000} height={600}>
-          <BarChart data={data} margin={{ right: 20 }}>
+      {/* Chart Container with fixed height */}
+      <div className="w-full h-96">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="label" />
             <YAxis />
             <Tooltip content={<CustomTooltip />} />
             <Legend />
 
-            {/* subjects, stackId makes bars stack */}
             <Bar dataKey="math" fill="#3b82f6" stackId="study" name="Math" />
             <Bar dataKey="cs" fill="#10b981" stackId="study" name="CS" />
             <Bar dataKey="biology" fill="#f59e0b" stackId="study" name="Biology" />

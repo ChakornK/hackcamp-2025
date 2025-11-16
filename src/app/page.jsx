@@ -1,9 +1,11 @@
-"use client"
-import React from 'react';
-import Streaks from './components/streaks';
-import StudyStats from './components/studystats';
-import Leaderboard from './components/leaderboard';
-import { useRouter } from 'next/navigation';
+"use client";
+import React from "react";
+import Streaks from "./components/streaks";
+import StudyStats from "./components/studystats";
+import Leaderboard from "./components/leaderboard";
+import BarChartComponent from "./components/chart";
+import { useRouter } from "next/navigation";
+import Timer from "./components/timer";
 
 const entries = [
   { date: "2025-11-10" },
@@ -13,8 +15,6 @@ const entries = [
   { date: "2025-11-15" },
   { date: "2025-11-16" },
 ];
-
-
 
 export default function Home() {
   const leaderboardData = [
@@ -30,42 +30,23 @@ export default function Home() {
       title: "Hall of shame :(",
       data: [
         { rank: 1, name: "Donald Trump", value: "35%" },
-        { rank: 2, name: "Big Beautiful Bill", value: "42%" },
+        {
+          rank: 2,
+          name: "Big Beautiful Billy Joel this is to test long names",
+          value: "42%",
+        },
         { rank: 3, name: "Diddy Blud", value: "67%" },
       ],
     },
   ];
-  const router = useRouter();
-
-  const Timer = () => (
-    <div className="flex justify-center items-center bg-orange-50 shadow-md hover:shadow-xl p-8 border-2 border-orange-400 rounded-3xl min-h-[200px] transition-shadow">
-      Timer Component
-    </div>
-  );
-
-  const Graph = () => (
-    <div className="flex justify-center items-center bg-white shadow-md hover:shadow-xl p-8 rounded-3xl h-full transition-shadow">
-      Graph Component
-    </div>
-  );
-  
-  const handleGoToSignup = () => {
-    router.push('/signup');
-  };
 
   return (
-    <main className="bg-[#E5E7EB] p-8 min-h-screen">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="mb-8 font-bold text-5xl text-center">
-          Reel Rewards Dashboard
-        </h1>
-        <button 
-          onClick={handleGoToSignup}
-          className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-semibold text-white transition-colors"
-        >
-          Go to Sign Up
-        </button>
+    <main className="bg-gray-200 p-8 min-h-screen">
+      <div className="top-0 right-0 left-0 z-10 fixed flex justify-between items-center bg-gray-100 px-8 h-24">
+        <h1 className="font-bold text-5xl text-center">Reel Rewards Dashboard</h1>
       </div>
+      <div className="w-full h-24"></div>
+
       <div className="space-y-6 mx-auto max-w-7xl">
         <div className="gap-6 grid grid-cols-3">
           <Timer />
@@ -73,11 +54,11 @@ export default function Home() {
           <StudyStats studyMinutes={120} averageStudyLength={30} />
         </div>
 
-        <div className="gap-6 grid grid-cols-3">
-          <div className="col-span-2">
-            <Graph />
+        <div className="flex gap-6">
+          <div className="bg-amber-50 shadow-md hover:shadow-xl p-8 border-2 border-amber-400 rounded-3xl overflow-hidden transition-shadow grow scrollbar-hide">
+            <BarChartComponent />
           </div>
-          <div>
+          <div className="max-w-[400px] shrink-0">
             <Leaderboard leaderboards={leaderboardData} />
           </div>
         </div>

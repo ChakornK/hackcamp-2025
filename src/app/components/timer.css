@@ -1,0 +1,93 @@
+
+.timer-component {
+  position: relative;
+  font-family: 'Fredoka', sans-serif;
+}
+
+
+.timer-header h1 {
+  font-weight: 500;
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+
+.timer-circle-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.timer-action-buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.timer-button {
+  background: #e0e0e0;
+  border: none;
+  color: #333;
+  padding: 0.75rem 2rem;
+  border-radius: 2rem;
+  width: 100%;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.timer-button:hover {
+  opacity: 0.9;
+}
+
+.timer-button.blue {
+  background: #8ec5ff;
+}
+
+.timer-button.gray {
+  background: #d0d0d0;
+}
+
+.timer-modal-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s linear;
+  border-radius: 15px;
+}
+
+.timer-modal-bg.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.timer-modal-box {
+  background: #fff;
+  margin: 2rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  color: #333;
+  transition: transform 0.25s cubic-bezier(0.4, 1.52, 0.49, 0.9);
+  transform: scale(0.8);
+}
+
+.timer-modal-box.show {
+  transform: scale(1);
+}
+
+.timer-modal-box p {
+  margin: 0;
+  text-align: center;
+}
