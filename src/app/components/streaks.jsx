@@ -5,9 +5,7 @@ export default function Streaks({ entries = [] }) {
     if (!entries || entries.length === 0) return 0;
 
     // Sort entries by date
-    const sorted = [...entries].sort(
-      (a, b) => new Date(a.date) - new Date(b.date)
-    );
+    const sorted = [...entries].sort((a, b) => new Date(a.date) - new Date(b.date));
     let currentStreak = 1;
 
     for (let i = 1; i < sorted.length; i++) {
@@ -62,15 +60,13 @@ export default function Streaks({ entries = [] }) {
   const last7Days = getLast7Days();
 
   return (
-    <div className="bg-blue-50 shadow-md hover:shadow-xl p-20 border-2 border-blue-400 rounded-3xl text-center transition-shadow">
+    <div className="bg-orange-50 shadow-md hover:shadow-xl p-20 border-2 border-orange-400 rounded-3xl text-center transition-shadow">
       <h2 className="mb-6 font-bold text-2xl">Current Streak 🔥</h2>
       <div className="flex justify-center gap-2 my-6">
         {last7Days.map((day, index) => (
           <div
             key={index}
-            className={`rounded-full w-10 h-10 flex items-center justify-center transition-all duration-300 ${
-              day.hasEntry ? "bg-blue-100" : "bg-gray-200"
-            }`}
+            className={`rounded-full w-10 h-10 flex items-center justify-center transition-all duration-300 ${day.hasEntry ? "bg-blue-100" : "bg-gray-200"}`}
             style={{ opacity: day.hasEntry ? 1 : 0.5 }}
           >
             <span className="text-2xl">📚</span>

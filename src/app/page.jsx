@@ -54,11 +54,11 @@ export default function Home() {
           <StudyStats studyMinutes={120} averageStudyLength={30} />
         </div>
 
-        <div className="gap-6 grid grid-cols-[2fr_400px]">
-          <div className="bg-white shadow-md hover:shadow-xl p-8 rounded-3xl min-w-0 max-h-[500px] overflow-auto transition-shadow scrollbar-hide">
+        <div className="flex gap-6">
+          <div className="bg-amber-50 shadow-md hover:shadow-xl p-8 border-2 border-amber-400 rounded-3xl overflow-hidden transition-shadow grow scrollbar-hide">
             <BarChartComponent />
           </div>
-          <div className="min-w-0 max-w-[400px]">
+          <div className="max-w-[400px] shrink-0">
             <Leaderboard leaderboards={leaderboardData} />
           </div>
         </div>
