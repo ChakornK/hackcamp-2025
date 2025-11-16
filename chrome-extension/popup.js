@@ -10,13 +10,7 @@ let startTimestamp = 0;
 let timeOffset = 0;
 
 let timerInterval;
-let startTimestamp = 0;
-let timeOffset = 0;
-
-let timerInterval;
 function updateTimer() {
-  progressSeconds = Math.floor((Date.now() - startTimestamp + timeOffset) / 1000);
-  progress = ((Date.now() - startTimestamp + timeOffset) / totalDuration) * 100;
   progressSeconds = Math.floor((Date.now() - startTimestamp + timeOffset) / 1000);
   progress = ((Date.now() - startTimestamp + timeOffset) / totalDuration) * 100;
   if (progress > 100) progress = 100;
@@ -29,7 +23,6 @@ function updateTimer() {
     .padStart(2, "0")}:${((progressSeconds % 3600) % 60).toString().padStart(2, "0")}`;
 
   if (progress < 100) {
-    timerInterval = setTimeout(updateTimer, updateInterval);
     timerInterval = setTimeout(updateTimer, updateInterval);
   }
 }
