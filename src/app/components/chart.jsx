@@ -38,6 +38,7 @@ const weeklyData = [
 ];
 
 const CustomTooltip = ({ active, payload, label }) => {
+  // for future reference, payload exists if you are hovering over a chart element
   if (active && payload && payload.length) {
     return (
       <div className="flex flex-col gap-1 bg-slate-900 p-3 rounded-md">

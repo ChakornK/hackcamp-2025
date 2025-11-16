@@ -5,6 +5,13 @@ import StudyStats from "./components/studystats";
 import Leaderboard from "./components/leaderboard";
 import BarChartComponent from "./components/chart";
 import { useRouter } from "next/navigation";
+("use client");
+import React from "react";
+import Streaks from "./components/streaks";
+import StudyStats from "./components/studystats";
+import Leaderboard from "./components/leaderboard";
+import BarChartComponent from "./components/chart";
+import { useRouter } from "next/navigation";
 
 const entries = [
   { date: "2025-11-10" },
