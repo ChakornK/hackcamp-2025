@@ -1,12 +1,16 @@
 const backendURL = "http://localhost:3000";
 let progress = 0;
 let progressSeconds = 0;
-const totalDuration = 0.025 * 60 * 1000; // 25 minutes
+let totalDuration = 0; // 25 minutes
 const updateInterval = 1000; // Update every 1s
 let startTimestamp = 0;
 let timeOffset = 0;
 let timerInterval;
 let running = false;
+
+const timePresets = [25 * 60, 67];
+let currentPreset = 0;
+totalDuration = timePresets[0] * 1000;
 
 let token = "";
 let currentSubject = "Math"
@@ -62,7 +66,13 @@ function resetTimer(timerInterval) {
 }
 
 function startPomodoro() {
-  //!!!
+  currentPreset = (currentPreset + 1) % timePresets.length;
+  startTimestamp = Date.now();
+  timeOffset = 0;
+  running = true;
+  totalDuration = timePresets[currentPreset] * 60 * 1000;
+  updateButtonVisibility();
+  updateTimer();
 }
 
 function updateTimer() {
@@ -73,7 +83,15 @@ function updateTimer() {
     });
   }
   progressSeconds = Math.floor((Date.now() - startTimestamp + timeOffset) / 1000);
-  progress = ((Date.now() - startTimestamp + timeOffset) / totalDuration) * 100;
+  const newProgress = ((Date.now() - startTimestamp + timeOffset) / totalDuration) * 100;
+  if (progress == 0 && newProgress > 0) {
+    if (currentPreset == 0) {
+      chrome.runtime.sendMessage({ action: "register" });
+    } else {
+      chrome.runtime.sendMessage({ action: "unregister" });
+    }
+  }
+  progress = newProgress;
 
   timerCircle.style.strokeDasharray = `${progress} ${100 - progress}`;
   timerText.textContent = `${Math.floor(progressSeconds / 3600)
@@ -84,10 +102,11 @@ function updateTimer() {
 
   if (progress < 100) {
     timerInterval = setTimeout(updateTimer, updateInterval);
+    return;
   }
-
   if (progress >= 100) {
     resetTimer(timerInterval);
+    startPomodoro();
   }
 }
 
@@ -122,6 +141,7 @@ cancelStopButton.addEventListener("click", () => {
 confirmStopButton.addEventListener("click", () => {
   hideStopModal();
   resetTimer(timerInterval);
+  chrome.runtime.sendMessage({ action: "unregister" });
 });
 
 startButton.addEventListener("click", () => {
