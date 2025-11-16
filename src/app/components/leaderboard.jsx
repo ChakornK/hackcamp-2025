@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 
 export default function Leaderboard({ leaderboards }) {
@@ -18,14 +19,17 @@ export default function Leaderboard({ leaderboards }) {
 
   return (
     <div className="flex items-center gap-4 h-full">
-      {/* Left Arrow */}
-      <button onClick={goToPrevious} className="flex-shrink-0 font-bold hover:text-gray-600 text-4xl transition-colors" aria-label="Previous leaderboard">
-        ←
-      </button>
-
       {/* Leaderboard Card */}
       <div className="flex flex-col flex-1 bg-fuchsia-50 shadow-md hover:shadow-xl p-8 border-2 border-fuchsia-400 rounded-3xl min-w-0 h-full transition-shadow">
-        <h2 className="mb-6 font-bold text-2xl text-center">{currentLeaderboard.title}</h2>
+        <div className="flex justify-between items-center mb-6">
+          <button onClick={goToPrevious} className="font-bold hover:text-gray-600 text-4xl transition-colors cursor-pointer" aria-label="Previous leaderboard">
+            <ChevronLeft />
+          </button>
+          <h2 className="font-bold text-2xl text-center">{currentLeaderboard.title}</h2>
+          <button onClick={goToNext} className="font-bold hover:text-gray-600 text-4xl transition-colors cursor-pointer" aria-label="Next leaderboard">
+            <ChevronRight />
+          </button>
+        </div>
 
         {entryCount === 0 ? (
           // No friends message
@@ -59,11 +63,6 @@ export default function Leaderboard({ leaderboards }) {
           </>
         )}
       </div>
-
-      {/* Right Arrow */}
-      <button onClick={goToNext} className="flex-shrink-0 font-bold hover:text-gray-600 text-4xl transition-colors" aria-label="Next leaderboard">
-        →
-      </button>
     </div>
   );
 }
