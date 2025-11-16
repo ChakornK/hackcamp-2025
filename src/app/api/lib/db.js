@@ -5,6 +5,10 @@ mongoose.connect(process.env.MONGODB_URI);
 const userSchema = new Schema({
   username: String,
   hashedPassword: String,
+  records: [{
+    date: String,
+    totalStudyDuration: Number
+  }],
   tokens: [String],
 });
 

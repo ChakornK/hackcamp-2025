@@ -1,5 +1,6 @@
 import { User } from "../../lib/db";
 import { sha256 } from "../../lib/sha256";
+import { userTokens } from "../../stateManager";
 
 export async function POST(req) {
   const { username, password } = await req.json();
@@ -10,6 +11,7 @@ export async function POST(req) {
   if (user.hashedPassword !== hashedPassword) return Response.json({ error: "Invalid credentials" }, { status: 401 });
 
   const token = crypto.randomUUID();
+  userTokens[token] = username;
   user.tokens.push(token);
   while (user.tokens.length > 10) {
     user.tokens.shift();
