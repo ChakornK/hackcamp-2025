@@ -1,19 +1,68 @@
 const backendURL = "http://localhost:3000";
-let progress = 0;
-let progressSeconds = 0;
-let totalDuration = 0; // 25 minutes
 const updateInterval = 1000; // Update every 1s
+
+let progress = 0;
+let totalDuration = 0;
 let startTimestamp = 0;
 let timeOffset = 0;
-let timerInterval;
 let running = false;
 
 const timePresets = [25 * 60, 67];
 let currentPreset = 0;
-totalDuration = timePresets[0] * 1000;
+
+let timerInterval;
+
+// Load saved state from storage
+chrome.storage.local.get(["timeOffset", "running", "currentPreset", "startTimestamp", "totalDuration", "currentSubject"], (result) => {
+  // Restore all timer state
+  if (result.timeOffset !== undefined) {
+    timeOffset = result.timeOffset;
+  }
+  if (result.running !== undefined) {
+    running = result.running;
+  }
+  if (result.currentPreset !== undefined) {
+    currentPreset = result.currentPreset;
+  }
+  if (result.startTimestamp !== undefined) {
+    startTimestamp = result.startTimestamp;
+  }
+  if (result.totalDuration !== undefined) {
+    totalDuration = result.totalDuration;
+  } else {
+    // Initialize totalDuration if not set
+    totalDuration = timePresets[currentPreset] * 1000;
+  }
+  if (result.currentSubject !== undefined) {
+    currentSubject = result.currentSubject;
+    subjectSelect.value = currentSubject;
+  }
+
+  updateButtonVisibility();
+
+  // If timer was running, resume it
+  if (running) {
+    updateTimer();
+  } else if (timeOffset > 0) {
+    // If paused, show the current progress
+    updateTimerDisplay();
+  }
+
+  // Save state periodically
+  setInterval(() => {
+    chrome.storage.local.set({
+      timeOffset,
+      running,
+      currentPreset,
+      startTimestamp,
+      totalDuration,
+      currentSubject,
+    });
+  }, 100);
+});
 
 let token = "";
-let currentSubject = "Math"
+let currentSubject = "Math";
 
 const timerCircle = document.getElementById("timer-circle");
 const timerText = document.getElementById("timer-text");
@@ -56,10 +105,18 @@ function resetTimer(timerInterval) {
   });
   clearTimeout(timerInterval);
   progress = 0;
-  progressSeconds = 0;
   startTimestamp = 0;
   timeOffset = 0;
   running = false;
+
+  // Clear storage
+  chrome.storage.local.set({
+    timeOffset: 0,
+    running: false,
+    startTimestamp: 0,
+    totalDuration: 0,
+  });
+
   updateButtonVisibility();
   timerCircle.style.strokeDasharray = `0 100`;
   timerText.textContent = "00:00:00";
@@ -75,6 +132,22 @@ function startPomodoro() {
   updateTimer();
 }
 
+// Separate function to update display without scheduling next update
+function updateTimerDisplay() {
+  const elapsed = running ? Date.now() - startTimestamp + timeOffset : timeOffset;
+  const progressSeconds = Math.floor(elapsed / 1000);
+  const newProgress = (elapsed / totalDuration) * 100;
+
+  progress = newProgress;
+
+  timerCircle.style.strokeDasharray = `${progress} ${100 - progress}`;
+  timerText.textContent = `${Math.floor(progressSeconds / 3600)
+    .toString()
+    .padStart(2, "0")}:${Math.floor((progressSeconds % 3600) / 60)
+    .toString()
+    .padStart(2, "0")}:${((progressSeconds % 3600) % 60).toString().padStart(2, "0")}`;
+}
+
 function updateTimer() {
   if (progress == 0) {
     fetch(`${backendURL}/api/logging/startTime`, {
@@ -82,8 +155,11 @@ function updateTimer() {
       body: JSON.stringify({ timestamp: Date.now(), token, subject: currentSubject }),
     });
   }
-  progressSeconds = Math.floor((Date.now() - startTimestamp + timeOffset) / 1000);
-  const newProgress = ((Date.now() - startTimestamp + timeOffset) / totalDuration) * 100;
+
+  const elapsed = Date.now() - startTimestamp + timeOffset;
+  const progressSeconds = Math.floor(elapsed / 1000);
+  const newProgress = (elapsed / totalDuration) * 100;
+
   if (progress == 0 && newProgress > 0) {
     if (currentPreset == 0) {
       chrome.runtime.sendMessage({ action: "register" });
@@ -100,6 +176,7 @@ function updateTimer() {
     .toString()
     .padStart(2, "0")}:${((progressSeconds % 3600) % 60).toString().padStart(2, "0")}`;
 
+  if (!running) return;
   if (progress < 100) {
     timerInterval = setTimeout(updateTimer, updateInterval);
     return;
@@ -147,6 +224,11 @@ confirmStopButton.addEventListener("click", () => {
 startButton.addEventListener("click", () => {
   clearTimeout(timerInterval);
   currentSubject = subjectSelect.value;
+  // If resuming (timeOffset > 0), keep the offset; otherwise start fresh
+  if (timeOffset === 0) {
+    totalDuration = timePresets[currentPreset] * 1000;
+  }
+  // Always set startTimestamp to now when starting/resuming
   startTimestamp = Date.now();
   running = true;
   updateButtonVisibility();

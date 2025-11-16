@@ -5,7 +5,7 @@ const register = () => {
   registered = true;
   chrome.scripting.registerContentScripts([
     {
-      id: "instagram-blocker",
+      id: "instagram-blocker" + Date.now(),
       matches: ["https://*.instagram.com/*"],
       js: ["blockers/instagram.js"],
       runAt: "document_start",
@@ -13,7 +13,7 @@ const register = () => {
       allFrames: true,
     },
     {
-      id: "youtube-blocker",
+      id: "youtube-blocker" + Date.now(),
       matches: ["https://*.youtube.com/*"],
       js: ["blockers/youtube.js"],
       runAt: "document_start",
@@ -21,7 +21,7 @@ const register = () => {
       allFrames: true,
     },
     {
-      id: "reddit-blocker",
+      id: "reddit-blocker" + Date.now(),
       matches: ["https://*.reddit.com/*"],
       js: ["blockers/reddit.js"],
       runAt: "document_start",
