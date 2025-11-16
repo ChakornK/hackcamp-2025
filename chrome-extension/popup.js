@@ -9,6 +9,7 @@ let timerInterval;
 let running = false;
 
 let token = "";
+let currentSubject = "Math"
 
 const timerCircle = document.getElementById("timer-circle");
 const timerText = document.getElementById("timer-text");
@@ -29,13 +30,18 @@ const loginButton = document.getElementById("login-button");
 const loginUsername = document.getElementById("login-username");
 const loginPassword = document.getElementById("login-password");
 
+const subjectSelect = document.getElementById("subject-select");
+const subjectContainer = document.getElementById("subject-container");
+
 function updateButtonVisibility() {
   if (running) {
     notRunningButtons.classList.add("hidden");
     runningButtons.classList.remove("hidden");
+    subjectSelect.disabled = true;
   } else {
     notRunningButtons.classList.remove("hidden");
     runningButtons.classList.add("hidden");
+    subjectSelect.disabled = false;
   }
 }
 
@@ -63,7 +69,7 @@ function updateTimer() {
   if (progress == 0) {
     fetch(`${backendURL}/api/logging/startTime`, {
       method: "POST",
-      body: JSON.stringify({ timestamp: Date.now(), token }),
+      body: JSON.stringify({ timestamp: Date.now(), token, subject: currentSubject }),
     });
   }
   progressSeconds = Math.floor((Date.now() - startTimestamp + timeOffset) / 1000);
@@ -120,6 +126,7 @@ confirmStopButton.addEventListener("click", () => {
 
 startButton.addEventListener("click", () => {
   clearTimeout(timerInterval);
+  currentSubject = subjectSelect.value;
   startTimestamp = Date.now();
   running = true;
   updateButtonVisibility();
@@ -135,6 +142,10 @@ pauseButton.addEventListener("click", () => {
 
 stopButton.addEventListener("click", () => {
   showStopModal();
+});
+
+subjectSelect.addEventListener("change", () => {
+  currentSubject = subjectSelect.value;
 });
 
 updateButtonVisibility();

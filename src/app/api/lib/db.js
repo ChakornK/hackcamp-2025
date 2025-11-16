@@ -7,7 +7,11 @@ const userSchema = new Schema({
   hashedPassword: String,
   records: [{
     date: String,
-    totalStudyDuration: Number
+    totalStudyDuration: Number,
+    subjects: [{
+      subject: String,
+      duration: Number
+    }]
   }],
   tokens: [String],
 });
