@@ -1,11 +1,12 @@
 "use client";
 import React from "react";
-import Streaks from "./components/streaks";
-import StudyStats from "./components/studystats";
-import Leaderboard from "./components/leaderboard";
-import BarChartComponent from "./components/chart";
-import { useRouter } from "next/navigation";
-import Timer from "./components/timer";
+import { useContext } from "react";
+import { GlobalContext } from "./lib/globalState";
+import Streaks from "./components/Streaks";
+import StudyStats from "./components/StudyStats";
+import Leaderboard from "./components/Leaderboard";
+import BarChartComponent from "./components/Chart";
+import Timer from "./components/Timer";
 
 const entries = [
   { date: "2025-11-10" },
@@ -17,25 +18,32 @@ const entries = [
 ];
 
 export default function Home() {
+  const {token} = useContext(GlobalContext)
+
+  if (!token) {
+    return <p>Please log in to view your stats</p>;
+  }
+
   const leaderboardData = [
     {
       title: "Leaderboard",
       data: [
-        { rank: 1, name: "Donald Trump", value: "3hr 5min" },
-        { rank: 2, name: "Agartha", value: "2hr 59min" },
-        { rank: 3, name: "Yo mama", value: "1hr 9min" },
+        { rank: 1, name: "HackCamper", value: "4hr 20min" },
+        { rank: 2, name: "Kregor Giczales", value: "1hr 9min" },
+        { rank: 3, name: "Big Chungus", value: "1hr 7min" },
       ],
     },
     {
       title: "Hall of shame :(",
       data: [
-        { rank: 1, name: "Donald Trump", value: "35%" },
+        { rank: 1, name: "Brick Nadley", value: "35%" },
         {
           rank: 2,
-          name: "Big Beautiful Billy Joel this is to test long names",
+          name: "Gon Rarcia",
           value: "42%",
         },
         { rank: 3, name: "Diddy Blud", value: "67%" },
+        { rank: 4, name: "Lebron James", value: "69%" }
       ],
     },
   ];
@@ -43,7 +51,9 @@ export default function Home() {
   return (
     <main className="bg-gray-200 p-8 min-h-screen">
       <div className="top-0 right-0 left-0 z-10 fixed flex justify-between items-center bg-gray-100 px-8 h-24">
-        <h1 className="hidden md:block font-bold text-5xl text-center">Reel Rewards Dashboard</h1>
+        <h1 className="hidden md:block font-bold text-5xl text-center">
+          Reel Rewards Dashboard
+        </h1>
         <h1 className="md:hidden block font-bold text-2xl">
           Reel<br></br>Rewards
         </h1>
@@ -59,7 +69,7 @@ export default function Home() {
 
         <div className="flex md:flex-row flex-col gap-6">
           <div className="bg-amber-50 shadow-md hover:shadow-xl p-8 border-2 border-amber-400 rounded-3xl overflow-hidden transition-shadow grow scrollbar-hide">
-            <BarChartComponent />
+            <BarChartComponent token={token}/>
           </div>
           <div className="max-w-[400px] shrink-0">
             <Leaderboard leaderboards={leaderboardData} />
