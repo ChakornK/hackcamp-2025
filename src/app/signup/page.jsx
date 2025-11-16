@@ -29,7 +29,7 @@ export default function SignupPage() {
     }
     toast.success(`Welcome, ${username}!`);
     setGlobalUsername(username);
-
+    localStorage.setItem("token", token);
     setToken(token);
   });
 

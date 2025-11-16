@@ -31,6 +31,7 @@ export const Navbar = () => {
                 onClick={() => {
                   setToken(null);
                   setUsername(null);
+                  localStorage.removeItem("token");
                 }}
                 className="flex items-center gap-2 hover:bg-red-500 p-2 rounded-lg hover:text-white transition-colors cursor-pointer"
               >
