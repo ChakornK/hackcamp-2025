@@ -39,18 +39,14 @@ export default function Home() {
       ],
     },
   ];
-  const router = useRouter();
-
-
-  const Graph = () => (
-    <div className="flex justify-center items-center bg-white shadow-md hover:shadow-xl p-8 rounded-3xl h-full transition-shadow">Graph Component</div>
-  );
 
   return (
-    <main className="bg-[#E5E7EB] p-8 min-h-screen">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="mb-8 font-bold text-5xl text-center">Reel Rewards Dashboard</h1>
+    <main className="bg-gray-200 p-8 min-h-screen">
+      <div className="top-0 right-0 left-0 z-10 fixed flex justify-between items-center bg-gray-100 px-8 h-24">
+        <h1 className="font-bold text-5xl text-center">Reel Rewards Dashboard</h1>
       </div>
+      <div className="w-full h-24"></div>
+
       <div className="space-y-6 mx-auto max-w-7xl">
         <div className="gap-6 grid grid-cols-3">
           <Timer />

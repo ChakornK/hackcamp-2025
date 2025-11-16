@@ -17,7 +17,7 @@ export const Navbar = () => {
     return (
       <>
         <button
-          className="top-8 right-8 fixed flex items-center bg-gray-100 hover:bg-white px-4 py-2 rounded-xl cursor-pointer"
+          className="top-6 right-8 z-20 fixed flex items-center bg-gray-100 hover:bg-white px-4 py-2 rounded-xl cursor-pointer"
           onClick={() => setContextMenuShown(true)}
         >
           <p className="text-lg">
@@ -25,7 +25,7 @@ export const Navbar = () => {
           </p>
         </button>
         {contextMenuShown && (
-          <div className="top-0 right-0 bottom-0 left-0 fixed" onClick={() => setContextMenuShown(false)}>
+          <div className="top-0 right-0 bottom-0 left-0 z-20 fixed" onClick={() => setContextMenuShown(false)}>
             <div className="top-18 right-8 fixed flex flex-col justify-center items-stretch bg-white shadow-lg mt-2 p-1 rounded-xl w-40">
               <button
                 onClick={() => {
@@ -44,7 +44,7 @@ export const Navbar = () => {
     );
   } else {
     return (
-      <div className="top-8 right-8 z-10 fixed flex items-stretch gap-2">
+      <div className="top-8 right-8 z-20 fixed flex items-stretch gap-2">
         <LoginButtons />
       </div>
     );
